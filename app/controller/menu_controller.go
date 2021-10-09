@@ -6,7 +6,7 @@ import (
 	"strconv"
 
 	"github.com/labstack/echo"
-  "app/model"
+	"app/model"
 )
 
 func AddMenu(c echo.Context) error {
@@ -22,6 +22,12 @@ func AddMenu(c echo.Context) error {
 			}
 	}
 
+	uid := userIDFromToken(c)
+	if user := model.FindUser(&model.User{ID: uid}); user.ID == 0 {
+        return echo.ErrNotFound
+	}
+
+	menu.User_ID = uid
 	model.CreateMenu(menu)
 
 	return c.JSON(http.StatusCreated, menu)
@@ -53,7 +59,7 @@ func DeleteMenu(c echo.Context) error {
 func UpdateMenu(c echo.Context) error {
 	menuID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-			return echo.ErrNotFound
+		return echo.ErrNotFound
 	}
 
 	time_id, _ := strconv.Atoi(c.FormValue("time_id"))

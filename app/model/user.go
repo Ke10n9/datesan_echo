@@ -5,7 +5,7 @@ import (
 )
 
 type User struct {
-	ID	uint      `json:"id"`
+	ID	int      `json:"id"`
 	Email	string	`json:"email" gorm:"type:varchar(255);unique;not null"`
 	Password	string	`json:"password" gorm:"not null;default:0"`
 	Created_at	time.Time	`json:"created_at"`
@@ -22,8 +22,14 @@ func FindUserById(id int) User {
 	return user
 }
 
-func FindUserByEmail(email string) User {
-	var user User
-	DB.Where("Email", email).First(&user)
-	return user
+// func FindUserByEmail(email string) User {
+// 	var user User
+// 	DB.Where("Email", email).First(&user)
+// 	return user
+// }
+
+func FindUser(u *User) User {
+    var user User
+    DB.Where(u).First(&user)
+    return user
 }

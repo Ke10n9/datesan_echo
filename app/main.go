@@ -18,12 +18,14 @@ func main() {
 	})
 	
 	e.POST("/signup", controller.Signup) // POST /signup
-	// e.POST("/login", controller.Login) // POST /login
+	e.POST("/login", controller.Login) // POST /login
 
-	e.POST("/menu/create", controller.AddMenu)
-	e.GET("/menu/:id", controller.GetMenu)
-	e.DELETE("/menu/:id", controller.DeleteMenu)
-	e.PUT("/menu/:id", controller.UpdateMenu)
+	api := e.Group("/api")
+	api.Use(middleware.JWTWithConfig(controller.Config)) // /api 下はJWTの認証が必要
+	api.POST("/menu/create", controller.AddMenu)
+	api.GET("/menu/:id", controller.GetMenu)
+	api.DELETE("/menu/:id", controller.DeleteMenu)
+	api.PUT("/menu/:id", controller.UpdateMenu)
 
 	e.Logger.Fatal(e.Start(":8080"))
 }
