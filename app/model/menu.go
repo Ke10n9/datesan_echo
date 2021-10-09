@@ -6,8 +6,8 @@ import (
 )
 
 type Menu struct {
-	ID	int      `json:"id"`
-	UserID int `gorm:"not null"`
+	ID int `json:"id"`
+	User_ID int `json:"user_id" gorm:"not null"`
 	// User User
 	Time_id	int	`json:"time_id" gorm:"not null"`
 	Date	string	`json:"date" gorm:"not null"`
@@ -16,7 +16,7 @@ type Menu struct {
 }
 
 func CreateMenu(menu *Menu) {
-	DB.Select("UserID", "Time_id", "Date").Create(menu)
+	DB.Select("User_ID", "Time_id", "Date").Create(menu)
 }
 
 func FindMenuById(id int) Menu {
